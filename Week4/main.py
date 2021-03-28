@@ -107,8 +107,8 @@ def generate_key():
     """
     # TODO: Generate a random 16-byte (128-bit) encryption key. (Hint: 1 line of code required)
     # See here for a hint: https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption.html
-    key = b'password12345678'  # TODO: We need to use a good source of randomness for our key.
-
+    # key = b'password12345678'   TODO: We need to use a good source of randomness for our key.
+    key = os.urandom(16)
     print(f'Your {len(key)*8}-bit key as bytes is: {key}')
     return key
 
@@ -121,19 +121,19 @@ def encrypt(message):
     print('Generating a key:')
 
     # TODO: Generate and display a key using a function from above. (Hint: 1 line of code required)
-    key = b'password12345678' # TODO: You must use the function above to generate a key.
-
-
-    print(f'Key: {key}')
+    # key = b'password12345678'  TODO: You must use the function above to generate a key.
+    key = generate_key()
 
 
     # TODO: Encode the key as base64 using a function from above. (Hint: 1 line of code required)
-    base64_encoded_key = 'TODO'
+    # base64_encoded_key = 'TODO'
+    base64_encoded_key = base64_encode(key)
     print(f'\nBase64 encoded key: {base64_encoded_key}\n')
 
 
     # TODO: Convert the message to bytes using a function from above. (Hint: 1 line of code required)
-    message = b'TODO'
+    # message = b'TODO'
+    message = message_to_bytes(message)
 
 
     # Create a new 'cipher' instance using AES (with the above key) and ECB mode. (Hint: 1 line of code required)
@@ -142,21 +142,27 @@ def encrypt(message):
     
 
     # TODO: Create an 'encryptor'. (Hint: 1 line of code required)
-    encryptor = 'TODO'
+    # encryptor = 'TODO'
+    encryptor = cipher.encryptor()
 
 
     # TODO: Update the encryptor with your message and finalize the encryptor. (Hint: 1 line  of code required)
-    ciphertext = 'TODO'
+    # ciphertext = 'TODO'
+    ciphertext = encryptor.update(message)
+
 
     # TODO: Run 'finalize()' on the encryptor. (Hint: 1 line of code required)
-    ciphertext = 'TODO'  # Add ciphertext from above to encryptor.finalize() like in the documentation examples.
+    # ciphertext = 'TODO'  Add ciphertext from above to encryptor.finalize() like in the documentation examples.
+    ciphertext = ciphertext + encryptor.finalize()
 
 
     # Print the ciphertext
     print(f'Ciphertext: {ciphertext}')
 
+
     # TODO: Display the base-64 encoded ciphertext. (Hint: 1 line of code required)
-    base64_encoded_ciphertext = 'TODO - This is not base64 encoded yet.'
+    # base64_encoded_ciphertext = 'TODO - This is not base64 encoded yet.'
+    base64_encoded_ciphertext = base64_encode(ciphertext)
 
 
     # Print the base64 encoded ciphertext.
@@ -173,35 +179,40 @@ def decrypt(key, ciphertext):
     print(f'Key as base64: {key}')
 
     # TODO: Decode the key from base64 into bytes using a function from above. (Hint: 1 line of code required)
-    key_as_bytes = 'TODO - Decode the key from base64 to bytes using the function above'
+    # key_as_bytes = 'TODO - Decode the key from base64 to bytes using the function above'
+    key_as_bytes = base64_decode(key)
 
+    
     print(f'\nKey as bytes: {key_as_bytes}\n')
-
     # TODO: Decode the ciphertext from base64 into bytes using a function from above. (Hint: 1 line of code required)
     print(f'Decoding ciphertext as bytes: {ciphertext}')
-    ciphertext_as_bytes = 'TODO - Decode the ciphertext from base64 to bytes using the function above'
+    ciphertext_as_bytes = base64_decode(ciphertext)
     print(f'Decoded ciphertext as bytes: {ciphertext_as_bytes}')
-
     # TODO: Create an AES-ECB cipher instance using the decoded key. (Hint: 1 line of code required)
     # Use modes.ECB() instead of modes.CBC(iv) from the example.
     print('Create new Cipher()')
-    cipher = 'TODO'
+    cipher = Cipher(algorithms.AES(key_as_bytes), modes.ECB())
+
 
     print('Create decryptor')
     # TODO: Create a 'decryptor' instance. (Hint: 1 line of code required)
-    decryptor = 'TODO'
+    decryptor = cipher.decryptor()
     
+
     print('Updating decryptor')
     # TODO: Use the decryptor to decrypt (and finalize) the ciphertext. (Hint: 2 lines of code required).
-    plaintext_with_padding = 'TODO - Update the decryptor with the ciphertext. See docs for help.'
-    final_plaintext = 'TODO - Finalize the decryptor'
-    plaintext_with_padding = final_plaintext
+    # plaintext_with_padding = 'TODO - Update the decryptor with the ciphertext. See docs for help.'
+    plaintext_with_padding = decryptor.update(ciphertext_as_bytes)
+    
+    # final_plaintext = 'TODO - Finalize the decryptor'
+    final_plaintext = decryptor.finalize()
+    plaintext_with_padding = plaintext_with_padding + final_plaintext
 
     print(f'Plaintext with padding looks like: {plaintext_with_padding}')
 
     # TODO: Remove the padding using a function from above. (Hint: 1 line of code required).
-    plaintext = 'TODO - Remove PKCS7 padding from the plaintext.'
-
+    # plaintext = 'TODO - Remove PKCS7 padding from the plaintext.'
+    plaintext = remove_pkcs7_padding(plaintext_with_padding)
     print('\n\n')
     print(f'Decrypted plaintext: {plaintext}')
 
