@@ -1,13 +1,18 @@
-"""
-Complete the str_to_binary function.
-"""
-from helper_functions import binary, FIX_ME
-
+conversion_table = ['0', '1']
+def decTobin(n):
+    if(n<=0):
+        bina = ''
+    else:
+        remainder = n%2
+        bina = decTobin(n//2)+conversion_table[remainder]
+    return  bina
 
 def str_to_binary(input_string):
-    # TODO: Add a loop here which for each loop, prints the binary string corresponding to each input character
-    # You will need to use 2 functions here. One to convert from character to integer, and another to convert from integer to binary.
-    FIX_ME('Implement str_to_binary()')
+    for character in input_string:
+        ascii_code = ord(character)
+        result = decTobin(ascii_code)
+        print(f'0b{result} ', end='')
+    print('')
 
 
 

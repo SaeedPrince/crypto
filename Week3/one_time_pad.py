@@ -1,8 +1,3 @@
-"""
-Complete the lines that have TODO: comments above them.
-"""
-
-from helper_functions import FIX_ME
 from string_with_spaces import str_to_spaces
 from string_to_ascii_codes import str_to_ascii_codes
 from string_to_hex import str_to_hex
@@ -54,13 +49,13 @@ def one_time_pad(plaintext, key):
         key_ascii_code = ord(key[i])
 
         # TODO: Perform an XOR.
-        ciphertext_ascii_code = FIX_ME('TODO: Perform an XOR')
+        ciphertext_ascii_code = xor(plaintext_ascii_code, key_ascii_code)
 
         # TODO: Convert the ciphertext ascii code back to a character.
-        ciphertext_character = '?'  # TODO: Convert ciphertext_ascii_code back to a character.
+        ciphertext_character = chr(ciphertext_ascii_code)
         
         # TODO: Add the character to your temporary list
-        FIX_ME(ciphertext_character)
+        temporary_list.append(ciphertext_character)
 
     # Print the contents of your temporary list
     print(f'Temporary List: {temporary_list}')
@@ -78,14 +73,15 @@ def one_time_pad(plaintext, key):
     print('Ciphertext ASCII Codes:')
     str_to_ascii_codes(ciphertext)
 
-    print('Ciphertext:')
+    print('\nCiphertext:')
     str_to_spaces(ciphertext)
 
 
 
 if __name__ == '__main__':
     # Call/run the function and check the output
-    one_time_pad('hello', 'PWN3D')
+    # one_time_pad('hello', 'PWN3D')
+    one_time_pad('Nick Castle', 'theonetimepadismucheasierwithcomputers')
 
     # TODO: Email me with your answer for this output.
     # one_time_pad('YOUR FULL NAME GOES HERE', 'theonetimepadismucheasierwithcomputers')
